@@ -1,36 +1,14 @@
-# Copilot Instructions for `workersai`
+## Package Manager Fallback Strategy
 
-This project runs on Cloudflare Workers with advanced features:
+### CI/CD Reliability: npm vs pnpm
+While pnpm is efficient locally, npm is more reliable in GitHub Actions due to:
+- Better lock file handling when pnpm-lock.yaml is missing  
+- More forgiving dependency resolution
+- Built-in Node.js compatibility
+- Mature CI/CD ecosystem support
 
-## Tech Stack
-- Cloudflare Workers (backend runtime)
-- Durable Objects for long-lived state
-- KV for caching (`CACHE`)
-- D1 (SQL) with Drizzle ORM (`DB`)
-- AI Binding for Workers AI
-- Vite frontend deployed to static assets
+### Deployment Best Practice:
+Default to npm for production deployments unless pnpm-specific features are required. This ensures maximum CI/CD compatibility and reduces deployment failures.
 
-## Repo Structure
-```
-backend/
-  drizzle/         # Drizzle ORM schema
-  src/             # Worker code (entry: index.ts)
-  wrangler.jsonc   # Main config for deployment
-frontend/
-  build/client/    # Static assets served by Worker
-.github/workflows/
-  deploy.yml       # CI/CD for Worker
-```
-
-## Useful Tips
-- To deploy: commit to `main`. GitHub Actions auto-deploys with Wrangler.
-- Use `CACHE.get/put` for fast reads.
-- Use `env.DB.prepare` for SQL queries via Drizzle.
-- AI available via `env.AI.run()` calls.
-
-## Default Package Manager
-- Use `pnpm` for all installs and builds
-- Install it locally with: `npm install -g pnpm`
-
-## Best Prompts for Copilot
-- "Genera
+### Fallback Implementation:
+The GitHub Actions workflow includes automatic fallback from pnpm to npm when lock files are missing or incompatible.
