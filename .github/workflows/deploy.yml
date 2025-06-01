@@ -41,4 +41,23 @@ jobs:
 
       - name: Install backend dependencies with fallback
         run: |
-          
+          if [ -f "package.json" ]; then
+            if [ -f "pnpm-lock.yaml" ]; then
+              echo "Using pnpm for backend"
+              npx pnpm install
+            else
+              echo "Using npm for backend"
+              npm install
+            fi
+          else
+            echo "No backend package.json found, skipping backend dependencies"
+          fi
+        working-directory: ./backend
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./backend
+          command: deploy --config wrangler.jsonc
