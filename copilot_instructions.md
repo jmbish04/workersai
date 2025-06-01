@@ -1,1 +1,34 @@
-IyDwn5iIIFRlc3QgQ29waWxvdCBJbnN0cnVjdGlvbnMgZm9yIGB3b3JrZXJzYWlgCgpgYGBtZAojIyDwn5K+IFRvb2xzIFVzZWQKLSBDbG91ZGZsYXJlIFdvcmtlcnMKLSBEVVJBQkxFX09CSkVDVFMgZm9yIHN0YXRlCnsgYmluZGluZzogIndvcmtlcnNfYWlfZHVyYWJsZV9vYmplY3QifQotIEtWIGZvciBjYWNoZSB7YmluZGluZzogIkNBQ0hFIn0KLSBEMSBkYXRhYmFzZSB3aXRoIERyaXp6bGUgb3JtIHtiaW5kaW5nOiAiREIifQotIEFJIGJpbmRpbmcgYmluZGVkIGFzICJBSSIKCmBgYAojIyDwn5iDIFJlcG8gU3RydWN0dXJlCmBgYApiYWNrZW5kLwogIGRyaXp6bGUvICAgICAgICAgICMgRHJpenpsZSBPUk0gc2NoZW1hCiAgc3JjLyAgICAgICAgICAgICMgV29ya2VyIGNvZGUgKGVudHJ5OiBpbmRleC50cykKICB3cmFuZ2xlci5qc29uYyAgIyBNYWluIGNvbmZpZwpmcm9udGVuZC8KICBidWlsZC9jbGllbnQvICAgIyBTdGF0aWMgYXNzZXRzIHNlcnZlZApgYGAKCiMjIPCfmIEgVXNlZnVsIFRyaWNrZXMKLSBGdWxsIGRlZmxveTogY29tbWl0IHRvIGBtYWluYC4KLSB1c2UgYENBQ0hFLmdldC9wdXRgIGZvciBjYWNoZQotIHVzZSBgZW52LkRCLnByZXBhcmBlYCBmb3IgU1FMIHF1ZXJpZXMKLSBhaSBjYWxscyB2aWEgYGBlbnYuQUkucnVuKClgYApgYGBiYXNoCndyYW5nbGVyIGRldiAtLWNvbmZpZyBiYWNrZW5kL3dyYW5nbGVyLmpzb25jCmBgYA==
+# Copilot Instructions for `workersai`
+
+This project runs on Cloudflare Workers with advanced features:
+
+## Tech Stack
+- Cloudflare Workers (backend runtime)
+- Durable Objects for long-lived state
+- KV for caching (`CACHE`)
+- D1 (SQL) with Drizzle ORM (`DB`)
+- AI Binding for Workers AI
+- Vite frontend deployed to static assets
+
+## Repo Structure
+```
+backend/
+  drizzle/         # Drizzle ORM schema
+  src/             # Worker code (entry: index.ts)
+  wrangler.jsonc   # Main config for deployment
+frontend/
+  build/client/    # Static assets served by Worker
+.github/workflows/
+  deploy.yml       # CI/CD for Worker
+```
+
+## Useful Tips
+- To deploy: commit to `main`. GitHub Actions auto-publishes with Wrangler.
+- Use `CACHE.get/put` for fast reads.
+- Use `env.DB.prepare` for SQL queries via Drizzle.
+- AI available via `env.AI.run()` calls.
+
+## Best Prompts for Copilot
+- "Generate Durable Object to store session data."
+- "Write SQL schema for user metadata."
+- "Use AI binding to classify text
