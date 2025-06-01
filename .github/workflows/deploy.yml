@@ -1,4 +1,4 @@
-```yaml
+
 name: Deploy to Cloudflare
 
 on:
@@ -79,4 +79,4 @@ jobs:
           else
             echo "⚠️ Initial deployment failed, aider attempted fixes and retry was triggered"
           fi
-```
+
