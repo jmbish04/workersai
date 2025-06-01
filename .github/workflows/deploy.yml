@@ -13,32 +13,32 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm  # Use npm for caching reliability
 
-      - name: Install frontend dependencies
-        run: pnpm install
+      - name: Install frontend dependencies with fallback
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            echo "Using pnpm (lock file found)"
+            npx pnpm install
+          else
+            echo "Falling back to npm (no pnpm lock file)"
+            npm install
+          fi
         working-directory: ./frontend
 
-      - name: Build frontend
-        run: pnpm build
+      - name: Build frontend with fallback
+        run: |
+          if [ -f "pnpm-lock.yaml" ]; then
+            npx pnpm build
+          else
+            npm run build
+          fi
         working-directory: ./frontend
 
-      - name: Install backend dependencies
-        run: pnpm install
-        working-directory: ./backend
-
-      - name: Deploy with Wrangler
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: ./backend
-          command: deploy --config wrangler.jsonc
+      - name: Install backend dependencies with fallback
+        run: |
+          
