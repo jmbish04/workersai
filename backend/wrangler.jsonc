@@ -1,42 +1,46 @@
 {
-	"$schema": "node_modules/wrangler/config-schema.json",
-	"name": "workersai",
-	"main": "src/index.ts",
-	"compatibility_date": "2025-04-25",
-	"migrations": [
-		{
-			"new_sqlite_classes": ["WorkersAIDurableObject"],
-			"tag": "v1"
-		}
-	],
-	"durable_objects": {
-		"bindings": [
-			{
-				"class_name": "WorkersAIDurableObject",
-				"name": "WORKERS_AI_DURABLE_OBJECT"
-			}
-		]
-	},
-	"observability": {
-		"enabled": true
-	},
-	"ai": {
-		"binding": "AI"
-	},
-	"kv_namespaces": [
-		{
-			"binding": "KV",
-			"id": "50dd80c1444449e1a84b1ea19ba95678"
-		}
-	],
-	"rules": [
-		{
-			"type": "Text",
-			"globs": ["**/*.sql"],
-			"fallthrough": true
-		}
-	],
-	"assets": {
-		"directory": "../frontend/build/client"
-	}
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "workersai",
+  "main": "src/index.ts",
+  "compatibility_date": "2025-04-25",
+  "migrations": [
+    {
+      "new_sqlite_classes": ["WorkersAIDurableObject"],
+      "tag": "v1"
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "class_name": "WorkersAIDurableObject",
+        "name": "WORKERS_AI_DURABLE_OBJECT"
+      }
+    ]
+  },
+  "observability": {
+    "enabled": true
+  },
+  "ai": {
+    "binding": "AI"
+  },
+  "kv_namespaces": [
+    {
+      "binding": "KV",
+      "id": "50dd80c1444449e1a84b1ea19ba95678"
+    },
+    {
+      "binding": "CACHE",
+      "id": "c622267fcdf843e39656d627d6639688"
+    }
+  ],
+  "rules": [
+    {
+      "type": "Text",
+      "globs": ["**/*.sql"],
+      "fallthrough": true
+    }
+  ],
+  "assets": {
+    "directory": "../frontend/build/client"
+  }
 }
