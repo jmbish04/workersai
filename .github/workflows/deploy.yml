@@ -1,3 +1,4 @@
+```yaml
 name: Deploy to Cloudflare
 
 on:
@@ -17,47 +18,65 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # Remove cache: npm since no root lock file exists
 
-      - name: Install frontend dependencies with fallback
-        run: |
-          if [ -f "pnpm-lock.yaml" ]; then
-            echo "Using pnpm (lock file found)"
-            npx pnpm install
-          else
-            echo "Falling back to npm (no pnpm lock file)"
-            npm install
-          fi
+      - name: Install frontend dependencies
+        run: npm install
         working-directory: ./frontend
 
-      - name: Build frontend with fallback
-        run: |
-          if [ -f "pnpm-lock.yaml" ]; then
-            npx pnpm build
-          else
-            npm run build
-          fi
+      - name: Build frontend
+        run: npm run build
         working-directory: ./frontend
 
-      - name: Install backend dependencies with fallback
+      - name: Install backend dependencies
         run: |
           if [ -f "package.json" ]; then
-            if [ -f "pnpm-lock.yaml" ]; then
-              echo "Using pnpm for backend"
-              npx pnpm install
-            else
-              echo "Using npm for backend"
-              npm install
-            fi
+            npm install
           else
             echo "No backend package.json found, skipping backend dependencies"
           fi
         working-directory: ./backend
 
-      - name: Deploy with Wrangler
+      - name: Deploy with Wrangler (with aider retry logic)
+        id: deploy_attempt
+        continue-on-error: true
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ./backend
           command: deploy --config wrangler.jsonc
+
+      - name: aider-chat-action for deploy fixes
+        if: steps.deploy_attempt.outcome == 'failure'
+        uses: mirrajabi/aider-github-action@v1.1.0
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          prompt: |
+            The Cloudflare Workers deployment failed. Please analyze the error logs and fix any issues in the wrangler.jsonc, package.json, or source code. 
+            Focus on:
+            - Wrangler configuration errors
+            - Missing dependencies or compatibility issues
+            - Runtime errors in the worker code
+            - Build configuration problems
+            Make the necessary fixes to resolve the deployment failure.
+          max-retries: 10
+          auto-commit: true
+          commit-message: "Fix deployment issues identified by aider (attempt ${{ github.run_attempt }})"
+
+      - name: Retry deployment after aider fixes
+        if: steps.deploy_attempt.outcome == 'failure'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./backend
+          command: deploy --config wrangler.jsonc
+
+      - name: Deployment status
+        run: |
+          if [ "${{ steps.deploy_attempt.outcome }}" == "success" ]; then
+            echo "✅ Initial deployment succeeded"
+          else
+            echo "⚠️ Initial deployment failed, aider attempted fixes and retry was triggered"
+          fi
+```
