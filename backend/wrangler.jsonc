@@ -29,6 +29,13 @@
       "id": "50dd80c1444449e1a84b1ea19ba95678"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "workersai-fs-v1",
+      "database_id": "e163353b-0719-4801-a84d-66f051659f86"
+    }
+  ],
   "rules": [
     {
       "type": "Text",
