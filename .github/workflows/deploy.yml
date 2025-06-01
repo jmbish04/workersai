@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: npm  # Use npm for caching reliability
+          # Remove cache: npm since no root lock file exists
 
       - name: Install frontend dependencies with fallback
         run: |
