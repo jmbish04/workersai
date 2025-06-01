@@ -3,6 +3,7 @@
   "name": "workersai",
   "main": "src/index.ts",
   "compatibility_date": "2025-04-25",
+  "compatibility_flags": ["nodejs_compat"],
   "migrations": [
     {
       "new_sqlite_classes": ["WorkersAIDurableObject"],
