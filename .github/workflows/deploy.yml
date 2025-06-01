@@ -17,27 +17,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          # Removed cache: pnpm due to missing lock file
 
       - name: Install frontend dependencies
-        run: pnpm install
+        run: npm install
         working-directory: ./frontend
 
       - name: Build frontend
-        run: pnpm build
+        run: npm run build
         working-directory: ./frontend
 
       - name: Install backend dependencies
-        run: pnpm install
+        run: npm install
         working-directory: ./backend
 
       - name: Deploy with Wrangler
@@ -45,3 +39,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: ./backend
+          command: deploy --config wrangler.jsonc
