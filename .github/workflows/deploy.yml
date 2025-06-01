@@ -11,14 +11,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9
+
       - name: Build frontend
         run: |
           cd frontend
-          npm install
-          npm run build
+          pnpm install
+          pnpm build
 
       - name: Install Wrangler
-        run: npm install -g wrangler
+        run: pnpm add -g wrangler
 
       - name: Deploy with Wrangler (backend config)
         run: wrangler deploy --config backend/wrangler.jsonc
