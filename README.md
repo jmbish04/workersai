@@ -1,8 +1,8 @@
 # Cloudflare AI Chat Demo
 
-[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/akazwz/workersai/tree/main/backend)
+[![Deploy to Cloudflare Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/jmbish04/workersai)
 
-Live Demo: [workersai.zwz.workers.dev](https://workersai.zwz.workers.dev/)
+Live Demo: [workersai.hacolby.workers.dev](https://workersai.hacolby.workers.dev/)
 
 This is a demo project showcasing a full-stack chat application built entirely on the Cloudflare stack, featuring AI capabilities.
 
