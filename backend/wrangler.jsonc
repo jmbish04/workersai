@@ -25,12 +25,8 @@
   },
   "kv_namespaces": [
     {
-      "binding": "KV",
-      "id": "50dd80c1444449e1a84b1ea19ba95678"
-    },
-    {
       "binding": "CACHE",
-      "id": "c622267fcdf843e39656d627d6639688"
+      "id": "50dd80c1444449e1a84b1ea19ba95678"
     }
   ],
   "rules": [
