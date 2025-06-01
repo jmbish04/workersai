@@ -23,12 +23,14 @@ frontend/
 ```
 
 ## Useful Tips
-- To deploy: commit to `main`. GitHub Actions auto-publishes with Wrangler.
+- To deploy: commit to `main`. GitHub Actions auto-deploys with Wrangler.
 - Use `CACHE.get/put` for fast reads.
 - Use `env.DB.prepare` for SQL queries via Drizzle.
 - AI available via `env.AI.run()` calls.
 
+## Default Package Manager
+- Use `pnpm` for all installs and builds
+- Install it locally with: `npm install -g pnpm`
+
 ## Best Prompts for Copilot
-- "Generate Durable Object to store session data."
-- "Write SQL schema for user metadata."
-- "Use AI binding to classify text
+- "Genera
