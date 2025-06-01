@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Wrangler
         run: npm install -g wrangler
-      - name: Publish with Wrangler (backend config)
-        run: wrangler publish --config backend/wrangler.jsonc
+      - name: Deploy with Wrangler (backend config)
+        run: wrangler deploy --config backend/wrangler.jsonc
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
