@@ -1,0 +1,5 @@
+name = "workersai"
+type = "javascript"
+account_id = "b3304b14848de15c72c24a14b0cd187d"
+workers_dev = true
+compatibility_date = "2025-06-01"
