@@ -2,3 +2,7 @@ name = "workersai"
 type = "javascript"
 workers_dev = true
 compatibility_date = "2025-06-01"
+
+[[kv_namespaces]]
+binding = "CACHE"
+id = "50dd80c1444449e1a84b1ea19ba95678"
