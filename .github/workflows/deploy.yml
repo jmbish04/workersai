@@ -47,36 +47,30 @@ jobs:
           command: deploy --config wrangler.jsonc
 
       - name: aider-chat-action for deploy fixes
-        if: steps.deploy_attempt.outcome == 'failure'
+        if: always()
         uses: mirrajabi/aider-github-action@v1.1.0
         with:
           openai-api-key: ${{ secrets.OPENAI_API_KEY }}
           prompt: |
-            The Cloudflare Workers deployment failed. Please analyze the error logs and fix any issues in the wrangler.jsonc, package.json, or source code. 
-            Focus on:
-            - Wrangler configuration errors
-            - Missing dependencies or compatibility issues
-            - Runtime errors in the worker code
-            - Build configuration problems
-            Make the necessary fixes to resolve the deployment failure.
+            The deployed Workers AI application at workersai.hacolby.workers.dev has JavaScript runtime errors:
+            Error: ae@https://workersai.hacolby.workers.dev/assets/chat-C_adMHAj.js:2:60621
+            
+            This appears to be a frontend build issue causing chat functionality to fail. Please:
+            1. Check frontend build configuration for Workers compatibility
+            2. Verify compatibility_flags in wrangler.jsonc include nodejs_compat
+            3. Fix any ES module or bundling issues in the chat component
+            4. Ensure proper error handling in the worker code
+            5. Check for missing dependencies or incorrect imports
+            
+            Fix the JavaScript runtime error and ensure the chat functionality works properly.
           max-retries: 10
           auto-commit: true
-          commit-message: "Fix deployment issues identified by aider (attempt ${{ github.run_attempt }})"
+          commit-message: "Fix JavaScript runtime errors in chat functionality (attempt ${{ github.run_attempt }})"
 
       - name: Retry deployment after aider fixes
-        if: steps.deploy_attempt.outcome == 'failure'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ./backend
           command: deploy --config wrangler.jsonc
-
-      - name: Deployment status
-        run: |
-          if [ "${{ steps.deploy_attempt.outcome }}" == "success" ]; then
-            echo "✅ Initial deployment succeeded"
-          else
-            echo "⚠️ Initial deployment failed, aider attempted fixes and retry was triggered"
-          fi
-
